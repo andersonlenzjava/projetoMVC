@@ -1,0 +1,47 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Professor</title>
+</head>
+
+<body>
+
+<div>
+    <h1>Lista de Professor</h1>
+</div>
+<div>
+    <div>
+        <div>
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Salário</th>
+                    <th>Status</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="professor : ${professores}">
+                    <th th:text="${professor.getId()}">ID</th>
+                    <td th:text="${professor.nome}">Nome do Professor</td>
+                    <td th:text="${professor.salario}">Salário</td>
+                    <td th:text="${professor.getStatusProfessor().toString()}">STATUS</td>
+                    <td><a href="#">Detalhes</a></td>
+                    <td><a href="#">Editar</a></td>
+                    <td><a href="#">Deletar</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div>
+        <a href="/professores/create">Novo Professor</a>
+    </div>
+</div>
+
+</body>
+</html>
