@@ -30,7 +30,8 @@
                     <td th:text="${professor.nome}">Nome do Professor</td>
                     <td th:text="${professor.salario}">Salário</td>
                     <td th:text="${professor.getStatusProfessor().toString()}">STATUS</td>
-                    <td><a href="#">Detalhes</a></td>
+                    <td><a th:href="@{/professores/{professorId}(professorId = ${professor.id})}">Detalhes</a></td>
+<!--                    um tipo de template string, para links, th tem vários simbolos para cada elemento #$@-->
                     <td><a href="#">Editar</a></td>
                     <td><a href="#">Deletar</a></td>
                 </tr>

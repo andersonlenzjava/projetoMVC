@@ -2,19 +2,21 @@
 <meta charset="UTF-8">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Novo Professor</title>
+  <title>Editar Professor</title>
 </head>
 
 <body>
 <div>
   <div>
-    <h1>Novo Professor</h1>
+<!--    passado no model and view -->
+    <h1>Editar Professor #: <span th:text="${professorId}"></span></h1>
   </div>
 
   <div>
     <div>
 <!--      para ter um objeto (com o nome da classe minusculo que autopreenche os campos
-caso dee erro e seus atributos com: -->
+caso dee erro e seus atributos com:
+ mostra o objeto passado -->
 <!--      em vez de name: th:field-->
       <form th:object="${requisicaoFormProfessor}" action="/professores" method="POST">
         <div>

@@ -1,6 +1,6 @@
 package br.com.xavecoding.regescweb.controllers;
 
-import br.com.xavecoding.regescweb.dto.RequisicaoNovoProfessor;
+import br.com.xavecoding.regescweb.dto.RequisicaoFormProfessor;
 import br.com.xavecoding.regescweb.models.Professor;
 import br.com.xavecoding.regescweb.models.StatusProfessor;
 import br.com.xavecoding.regescweb.repositories.ProfessorRepository;
@@ -8,19 +8,20 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
+@RequestMapping(value = "/professores")
 public class ProfessorController {
 
     @Autowired
     private ProfessorRepository professorRepository;
 
-    @GetMapping("/professores")
+    @GetMapping("")
     public ModelAndView index() {
 
         List<Professor> professores = professorRepository.findAll();
@@ -30,33 +31,90 @@ public class ProfessorController {
         return mv;
     }
 
+    //USO DE CONVENÇÕES AO FAZER A ENTRADA DE DADOS
+    //usar os mesmos nomes dos atrubutos em todas as camadas, no model e no view
+
+    // passagem do parametro requisicao para ele ter ele carregado
+    @GetMapping("/new")
+    public ModelAndView nnew(RequisicaoFormProfessor formNovoProfessor) {
+        ModelAndView mv = new ModelAndView("professores/new");
+        mv.addObject("listaStatusProfessor", StatusProfessor.values());
+
+        return mv;
+    }
+
     // o POST da página faz este redirecionamento e chama o método GET dos professores
-    @PostMapping("/professores")
-    public String create(@Valid RequisicaoNovoProfessor formNovoProfessor, BindingResult bindingResult) {
+    @PostMapping("")
+    public ModelAndView create(@Valid RequisicaoFormProfessor formNovoProfessor, BindingResult bindingResult) {
 
         // se a validação tiver erros faz esta operação
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             System.out.println("\n******************** TEM ERROS *****************\n");
-            return "redirect:/professores/new";
+
+            ModelAndView mv = new ModelAndView("professores/new");
+
+            // atributo que é carregado novamente ao entrar na clase de erros
+            mv.addObject("listaStatusProfessor", StatusProfessor.values());
+            return mv;
         }
         else {
             Professor professor = formNovoProfessor.toProfessor();
             this.professorRepository.save(professor);
 
-            return "redirect:/professores";
+//          após criar os professores chava o seu detalhamento através da string montada abaixo
+            return new ModelAndView("redirect:/professores/" + professor.getId());
         }
 
     }
 
-    //USO DE CONVENÇÕES AO FAZER A ENTRADA DE DADOS
-    //usar os mesmos nomes dos atrubutos em todas as camadas, no model e no view
+    @GetMapping("/{id}")
+    public ModelAndView show(@PathVariable Long id) {
+       Optional<Professor> optionalProfessor = this.professorRepository.findById(id);
 
-    @GetMapping("/professores/new")
-    public ModelAndView nnew() {
-        ModelAndView mv = new ModelAndView("professores/new");
-        mv.addObject("statusProfessor", StatusProfessor.values());
+       if(optionalProfessor.isPresent()) {
+           Professor professor =optionalProfessor.get();
 
-        return mv;
+           ModelAndView mv = new ModelAndView("professores/show");
+           mv.addObject("professor", professor);
+
+           return mv;
+       }
+       else {
+            System.out.println("$$$$$$$$$$$ NÃO FOI ENCONTRADO O PROFESSOR DE ID " + id + " $$$$$$$$$$");
+           //poderia fazer uma mensagem de erro, mas redireciona para a listagem
+           return new ModelAndView("redirect:/professores");
+       }
     }
+
+    @GetMapping("/{id}/edit")
+    public ModelAndView edit(@PathVariable Long id, RequisicaoFormProfessor formNovoProfessor) {
+        Optional<Professor> optionalProfessor = this.professorRepository.findById(id);
+
+        if(optionalProfessor.isPresent()) {
+            Professor professor = optionalProfessor.get();
+            formNovoProfessor.fromProfessor(professor);
+
+//            modifica o objeto reqnovoprof que é passado para view
+            ModelAndView mv = new ModelAndView("professores/edit");
+            mv.addObject("professorId",professor.getId());
+//            passagem deste atributo junto com a requisição
+            mv.addObject("listaStatusProfessor", StatusProfessor.values());
+
+            return mv;
+        }
+            else {
+            System.out.println("$$$$$$$$$$$ NÃO FOI ENCONTRADO O PROFESSOR DE ID " + id + " $$$$$$$$$$");
+            //poderia fazer uma mensagem de erro, mas redireciona para a listagem
+            return new ModelAndView("redirect:/professores");
+        }
+    }
+
+
+    // para o objeto ser encontrado pela view new
+//    @ModelAttribute(value = "requisicaoNovoProfessor")
+//    public RequisicaoNovoProfessor getRequisicaoNovoProfessor()
+//    {
+//        return new RequisicaoNovoProfessor();
+//    }
 
 }
