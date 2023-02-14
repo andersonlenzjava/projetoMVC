@@ -18,7 +18,8 @@
 caso dee erro e seus atributos com:
  mostra o objeto passado -->
 <!--      em vez de name: th:field-->
-      <form th:object="${requisicaoFormProfessor}" action="/professores" method="POST">
+<!--      template para montar a requisição a página de update -->
+      <form th:object="${requisicaoFormProfessor}" th:action="@{/professores/{professorId}(professorId = ${professorId})}" method="POST">
         <div>
           <label>Nome do Professor</label>
           <input type="text" th:field="*{nome}">

@@ -1,5 +1,6 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" href="/css/style.css">
 <head>
     <title>Professor</title>
 </head>
@@ -8,6 +9,7 @@
 
 <div>
     <h1>Lista de Professor</h1>
+    <span class="sucess-menssage">Uma grande mensagem!</span>
 </div>
 <div>
     <div>
@@ -32,8 +34,8 @@
                     <td th:text="${professor.getStatusProfessor().toString()}">STATUS</td>
                     <td><a th:href="@{/professores/{professorId}(professorId = ${professor.id})}">Detalhes</a></td>
 <!--                    um tipo de template string, para links, th tem vários simbolos para cada elemento #$@-->
-                    <td><a href="#">Editar</a></td>
-                    <td><a href="#">Deletar</a></td>
+                    <td><a th:href="@{/professores/{professorId}/edit(professorId = ${professor.id})}">Editar</a></td>
+                    <td><a th:href="@{/professores/{professorId}/delete(professorId = ${professor.id})}">Deletar</a></td>
                 </tr>
                 </tbody>
             </table>

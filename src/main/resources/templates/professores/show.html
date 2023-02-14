@@ -18,8 +18,8 @@
             </div>
             <div>
                 <div>
-                    <a href="#">Editar</a> <a href="/professores">Voltar</a>
-<!--                     th:href="@{/professores/{professorId}/edit(professorId = ${professor.id})}"-->
+<!--                    monta a url do botão editar na view show -->
+                    <a th:href="@{/professores/{professorId}/edit(professorId = ${professor.id})}">Editar</a><a href="/professores">Voltar</a>
                 </div>
             </div>
         </div>
