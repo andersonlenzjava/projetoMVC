@@ -14,14 +14,14 @@ public class Professor {
     private String nome;
     private BigDecimal salario;
     @Enumerated(EnumType.STRING)
-    private StatusProfessor satatusProfessor;
+    private StatusProfessor statusProfessor;
 
     public Professor () {}
 
-    public Professor(String nome, BigDecimal salario, StatusProfessor satatusProfessor) {
+    public Professor(String nome, BigDecimal salario, StatusProfessor statusProfessor) {
         this.nome = nome;
         this.salario = salario;
-        this.satatusProfessor = satatusProfessor;
+        this.statusProfessor = statusProfessor;
     }
 
     public void setId(Long id) {
@@ -36,8 +36,8 @@ public class Professor {
         this.salario = salario;
     }
 
-    public void setSatatusProfessor(StatusProfessor satatusProfessor) {
-        this.satatusProfessor = satatusProfessor;
+    public void setStatusProfessor(StatusProfessor statusProfessor) {
+        this.statusProfessor = statusProfessor;
     }
 
     public Long getId() {
@@ -52,7 +52,17 @@ public class Professor {
         return salario;
     }
 
-    public StatusProfessor getSatatusProfessor() {
-        return satatusProfessor;
+    public StatusProfessor getStatusProfessor() {
+        return statusProfessor;
+    }
+
+    @Override
+    public String toString() {
+        return "Professor{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", salario=" + salario +
+                ", statusProfessor=" + statusProfessor +
+                '}';
     }
 }
